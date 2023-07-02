@@ -4,7 +4,6 @@
  Widget (Konfabulator) Engine. Created for XP, Vista, Win7, 8, 10+ as well as the 
  Apple Mac.
  
- ![steampunkResisitors0001](https://github.com/yereverluvinunclebert/Steampunk-Resistors/assets/2788342/a58a6caa-270c-451b-ac94-00f285513789)
  
  This widget is an attractive steampunk Yahoo widget for your desktop. The 
  steampunk media player widget allows you to play audio files on your Windows PC
@@ -15,7 +14,9 @@
   XP. It can also be assigned the function of your choice when you double click 
   on any part of the widget, by default it opens the Windows network sound 
   control applet.
- 
+
+  ![mediaplayer02_670](https://github.com/yereverluvinunclebert/Steampunk-MediaPlayer-Ywidget/assets/2788342/d9e011aa-e9c8-4bc8-8640-a9f983274d5c)
+
  The widget can be resized - Hover the cursor over the widget. Press the CTRL key 
  and use your mousewheel up or down. The widget will resize dynamically.
  
@@ -25,13 +26,18 @@
  can hold up to 10,000 media files, can save and re-open playlists and saves 
  folders for later playing. You can drag/drop files or folders onto the widget 
  straight from Windows.
- 
- Click on the slider and drag it to the left or right and the media player 
+
+ ![media-player-demo2_261](https://github.com/yereverluvinunclebert/Steampunk-MediaPlayer-Ywidget/assets/2788342/49cba403-0bfe-469d-8932-ca5b03bc478b)
+
+  Click on the slider and drag it to the left or right and the media player 
  volume will increase/decrease.There are pause, next and previous buttons.
  
  Click on the pause button and the media player sound will mute as the track 
  will be paused.
- 
+
+ ![media-player-yahoo-display_670](https://github.com/yereverluvinunclebert/Steampunk-MediaPlayer-Ywidget/assets/2788342/5a8b0ee5-29d3-4298-8df9-0eae80f052de)
+
+
  The position slider allows you to select the exact part of the track to play. 
  The rod to the right end of the chassis acts as a shuffle button. The rod on 
  the other end allows you to select a specific single file for playing. To 
@@ -43,12 +49,16 @@
  settings where you can set the default player for the widget to use.You can 
  also select a variety of options for playing incuding selecting an audio CD.
  
+![media-player-help_670](https://github.com/yereverluvinunclebert/Steampunk-MediaPlayer-Ywidget/assets/2788342/7ea3636c-225f-43a4-881f-64ee53b4995b)
+ 
  Double-clicking on the widget will cause a personalised Windows application to 
  fire up. The first time you run it there will be no assigned function and so it 
  will state as such and then pop up the preferences so that you can enter the 
  command of your choice. The widget takes command line-style commands for 
  windows. 
- 
+
+ ![yahoo-logo-small_111](https://github.com/yereverluvinunclebert/Steampunk-MediaPlayer-Ywidget/assets/2788342/c5668608-ab57-4665-a332-3bc9b7e07a9f)
+
  All javascript widgets need an engine to function, in this case the widget uses 
  the Yahoo Widget Konfabulator engine. The engine interprets the javascript and 
  creates the widget according to the XML description and using the images you 
