@@ -1,0 +1,333 @@
+
+
+// FROM MpcApi.h :
+//
+// This file define commands used for "Media Player Classic - Homecinema" API. To send commands
+// to mpc-hc, and receive playback notifications, first launch process with the /slave command line
+// argument follow by an HWnd handle use to receive notification :
+//
+// ..\bin\mplayerc /slave 125421
+//
+// After startup, mpc-hc send a WM_COPYDATA message to host with COPYDATASTRUCT struct filled with :
+//       - dwData    : CMD_CONNECT
+//       - lpData    : Unicode string containing mpc-hc main window Handle
+//
+// To pilot mpc-hc, send WM_COPYDATA messages to Hwnd provided on connection. All messages should be
+// formatted as Unicode strings. For commands or notifications with multiple parameters, values are
+// separated by |
+// If a string contains a |, it will be escaped with a \ so a \| is not a separator
+//
+// Ex : When a file is openned, mpc-hc send to host the "now playing" notification :
+//       - dwData    : CMD_NOWPLAYING
+//       - lpData    : title|author|description|filename|duration
+
+//~ #pragma once
+
+
+//~ typedef enum MPC_LOADSTATE
+//~ {
+//~  MLS_CLOSED,
+//~  MLS_LOADING,
+//~  MLS_LOADED,
+//~  MLS_CLOSING
+//~ }//
+
+
+//~ typedef enum MPC_PLAYSTATE
+//~ {
+//~  PS_PLAY   = 0,
+//~  PS_PAUSE  = 1,
+//~  PS_STOP   = 2,
+//~  PS_UNUSED = 3
+//~ }//
+
+//include Windows.h
+//Library 	User32.lib
+//DLL 	User32.dll
+
+/* Load JS Ctypes Javascript module */
+//require("chrome").Cu.import("resource://gre/modules/ctypes.jsm");
+
+/* Load windows api dll */
+var lib = open("user32.dll");
+
+/* Declare the signature of the function we are going to call */
+var SendMessageA = lib.declare("SendMessage", hwnd, wMsg, wParam, lParam);
+
+Declare Function SendMessageHM Lib "user32.dll" Alias "SendMessageA" (
+ByVal hWnd As IntPtr,
+ByVal wMsg As Int32,
+ByVal wParam As Int32,
+ByVal lParam As String) As Int32
+
+//==== Commands from MPC to host
+
+//   // Send after connection
+//   // Par 1 : MPC window handle (command should be send to this HWnd)
+var CMD_CONNECT = 0x50000000;
+
+//   // Send when opening or closing file
+//   // Par 1 : current state (see MPC_LOADSTATE enum)
+var CMD_STATE = 0x50000001;
+
+//   // Send when playing, pausing or closing file
+//   // Par 1 : current play mode (see MPC_PLAYSTATE enum)
+var CMD_PLAYMODE = 0x50000002;
+
+//   // Send after opening a new file
+//   // Par 1 : title
+//   // Par 2 : author
+//   // Par 3 : description
+//   // Par 4 : complete filename (path included)
+//   // Par 5 : duration in seconds
+var CMD_NOWPLAYING = 0x50000003;
+
+//   // List of subtitle tracks
+//   // Par 1 : Subtitle track name 0
+//   // Par 2 : Subtitle track name 1
+//   // ...
+//   // Par n : Active subtitle track, -1 if subtitles disabled
+//   //
+//   // if no subtitle track present, returns -1
+//   // if no file loaded, returns -2
+var CMD_LISTSUBTITLETRACKS = 0x50000004;
+
+//   // List of audio tracks
+//   // Par 1 : Audio track name 0
+//   // Par 2 : Audio track name 1
+//   // ...
+//   // Par n : Active audio track
+//   //
+//   // if no audio track present, returns -1
+//   // if no file loaded, returns -2
+var CMD_LISTAUDIOTRACKS = 0x50000005;
+
+//   // List of files in the playlist
+//   // Par 1 : file path 0
+//   // Par 2 : file path 1
+//   // ...
+//   // Par n : active file, -1 if no active file
+var CMD_PLAYLIST = 0x50000006;
+
+
+// ====================================================================
+// ==== Commands from host to MPC
+
+//   // Open new file
+//   // Par 1 : file path
+var CMD_OPENFILE = 2684354560 ; // 0xA0000000
+
+//   // Stop playback, but keep file / playlist
+var CMD_STOP = 2684354561 ; // 0xA0000001
+
+//   // Stop playback and close file / playlist
+var CMD_CLOSEFILE = 2684354562 ; // 0xA0000002
+
+//   // Pause or restart playback
+var CMD_PLAYPAUSE = 0xA0000003;
+
+//   // Add a new file to playlist (did not start playing)
+//   // Par 1 : file path
+var CMD_ADDTOPLAYLIST = 0xA0001000;
+
+//   // Remove all files from playlist
+var CMD_CLEARPLAYLIST =0xA0001001;
+
+//   // Start playing playlist
+var CMD_STARTPLAYLIST = 0xA0001002;
+
+//   CMD_REMOVEFROMPLAYLIST  = 0xA0001003,   // TODO
+
+//   // Cue current file to specific position
+//   // Par 1 : new position in seconds
+var CMD_SETPOSITION = 0xA0002000;
+
+//   // Set the audio delay
+//   // Par 1 : new audio delay in ms
+var CMD_SETAUDIODELAY = 0xA0002001;
+
+//   // Set the subtitle delay
+//   // Par 1 : new subtitle delay in ms
+var CMD_SETSUBTITLEDELAY = 0xA0002002;
+
+//   // Set the active file in the playlist
+//   // Par 1 : index of the active file, -1 for no file selected
+//   // DOESN'T WORK
+var CMD_SETINDEXPLAYLIST = 0xA0002003;
+
+//   // Set the audio track
+//   // Par 1 : index of the audio track
+var CMD_SETAUDIOTRACK = 0xA0002004;
+
+//   // Set the subtitle track
+//   // Par 1 : index of the subtitle track, -1 for disabling subtitles
+var CMD_SETSUBTITLETRACK = 0xA0002005;
+
+//   // Ask for a list of the subtitles tracks of the file
+//   // return a CMD_LISTSUBTITLETRACKS
+var CMD_GETSUBTITLETRACKS = 0xA0003000;
+
+//   // Ask for a list of the audio tracks of the file
+//   // return a CMD_LISTAUDIOTRACKS
+var CMD_GETAUDIOTRACKS = 0xA0003001;
+
+//   // Ask for the properties of the current loaded file
+//   // return a CMD_NOWPLAYING
+var CMD_GETNOWPLAYING = 0xA0003002;
+
+//   // Ask for the current playlist
+//   // return a CMD_PLAYLIST
+var CMD_GETPLAYLIST = 0xA0003003;
+
+//== End MPC Commands
+
+var gs_messages;
+var ghnd_MPC_handle;
+
+// this needs to be addressed
+//GUIRegisterMsg(WM_COPYDATA, "Msg_WM_COPYDATA");
+
+// GUI start
+//Form1 = GUICreate("MPC-HC remote demo", 608, 408, 180, 120)
+//Edit1 = GUICtrlCreateEdit("", 16, 16, 577, 321)
+//Button_open = GUICtrlCreateButton("Open File", 24, 368, 140, 28, 0)
+//Button_play = GUICtrlCreateButton("Play / Pause", 224, 368, 140, 28, 0)
+//Button_stop = GUICtrlCreateButton("Stop", 424, 368, 140, 28, 0)
+// GUI end
+
+ function widgetOnLoad()
+{
+ //SendMessage();
+log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+
+// Run MPC-HC with our GUI form handle
+exepath_MPC = GetPathOfMPCHC();
+//s_formHandle = Dec(StringMid(String(Form1),3))
+s_formHandle = 112345; //unique handle ID generated for this connection
+pid_MPC = Run('"' & exepath_MPC & '" /slave ' & s_formHandle)
+
+if (pid_MPC === 0) {
+    alert(0,"Error","Could not run " & exepath_MPC & " (Path?)");
+    Exit;
+}
+
+}
+
+/*
+//GUI loop
+While 1
+    nMsg = GUIGetMsg()
+    Switch nMsg
+        Case GUI_EVENT_CLOSE
+            Exit
+        Case Button_open
+            s_FileToOpen = FileOpenDialog("Open Media File","C:","Media files (*.*)")
+            MPC_send_message(ghnd_MPC_handle, CMD_OPENFILE, s_FileToOpen)
+        Case Button_play
+            MPC_send_message(ghnd_MPC_handle, CMD_PLAYPAUSE, "")
+        Case Button_stop
+            MPC_send_message(ghnd_MPC_handle, CMD_STOP, "")
+    EndSwitch
+WEnd
+*/
+/*
+Function MPC_send_message(prm_hnd_MPC, prm_MPC_Command,prm_MPC_parameter) {
+    var StructDef_COPYDATA
+    var st_COPYDATA
+    var p_COPYDATA
+    var st_CDString
+    var p_CDString
+    var i_StringSize
+
+    StructDef_COPYDATA = "dword dwData//dword cbData//ptr lpData"// 32 bit command// length of string// pointer to string
+    st_COPYDATA = DllStructCreate(StructDef_COPYDATA) // create the message struct
+
+    i_StringSize = StringLen(prm_MPC_parameter) + 1 // +1 for null termination
+    st_CDString = DllStructCreate("wchar var1[" & i_StringSize & "]") // the array to hold the unicode string we are sending
+    DllStructSetData(st_CDString,1,prm_MPC_parameter) // set parameter string
+    DllStructSetData(st_CDString,1,0,i_StringSize) // null termination
+    p_CDString = DllStructGetPtr(st_CDString) // the pointer to the string
+
+    DllStructSetData(st_COPYDATA, "dwData", prm_MPC_Command) // dwData 32 bit command
+    DllStructSetData(st_COPYDATA, "cbData", i_StringSize * 2) // size of string * 2 for unicode
+    DllStructSetData(st_COPYDATA, "lpData", p_CDString) // lpData pointer to data
+    p_COPYDATA = DllStructGetPtr(st_COPYDATA) // pointer to COPYDATA struct
+
+    // We need to test/replicate SendMessage in .js
+    //
+    SendMessageA(prm_hnd_MPC,WM_COPYDATA,0,p_COPYDATA)
+
+    st_COPYDATA = 0 // free the struct
+    st_CDString = 0 // free the struct
+}
+
+// Receives WM_COPYDATA message from MPC
+Function Msg_WM_COPYDATA(hWnd, Msg, wParam, lParam) {
+        // LParam = pointer to a COPYDATA struct
+        var StructDef_COPYDATA
+        var st_COPYDATA
+        var StructDef_DataString
+        var st_DataString
+        var s_DataString
+        var s_dwData, s_cbData, s_lpData
+
+        StructDef_COPYDATA = "dword dwData//dword cbData//ptr lpData"
+        StructDef_DataString = "char DataString"
+        st_COPYDATA = DllStructCreate(StructDef_COPYDATA, LParam)
+        s_dwData = DllStructGetData(st_COPYDATA,"dwData") // 32bit MPC command
+        s_cbData = DllStructGetData(st_COPYDATA,"cbData") // length of DataString
+        s_lpData = DllStructGetData(st_COPYDATA,"lpData") // pointer to DataString
+
+        StructDef_DataString = "wchar DataString[" & int(s_cbData) & "]" //unicode string with length cbData
+
+        st_DataString = DllStructCreate(StructDef_DataString,s_lpData)
+        s_DataString = DllStructGetData(st_DataString,"DataString")
+
+        // If we receive a 0x50000000 CMD_CONNECT we retrieve the MPC handle
+        If s_dwData = 1342177280 Then
+            ghnd_MPC_handle = s_DataString
+        EndIf
+
+        gs_messages = MPC_Command_to_Text(s_dwData) & @CRLF & "Data: " & s_DataString & @CRLF & gs_messages
+        // this puts the command into a control structure
+        // needs to be addressed
+        //        GUICtrlSetData(Edit1, gs_messages)
+
+}
+
+Function MPC_Command_to_Text(prm_MPC_Command)  {
+    // Converts an MPC command code to plain text// accepts the decimal value of the command
+
+    Switch prm_MPC_Command
+        Case 1342177280     //0x50000000
+            s_return_msg = "CMD_CONNECT"
+        Case 1342177281     //0x50000000
+            s_return_msg = "CMD_STATE"
+        Case 1342177282     //0x50000002
+            s_return_msg = "CMD_PLAYMODE"
+        Case 1342177283     //0x50000003
+            s_return_msg = "CMD_NOWPLAYING"
+        Case 1342177284     //0x50000004
+            s_return_msg = "CMD_LISTSUBTITLETRACKS"
+        Case 1342177285     //0x50000005
+            s_return_msg = "CMD_LISTAUDIOTRACKS"
+        Case 1342177286     //0x50000006
+            s_return_msg = "CMD_PLAYLIST"
+        Case Else
+            s_return_msg = "CMD_NO_or_UNKNOWN_CMD"
+    EndSwitch
+
+    Return s_return_msg
+}
+*/
+
+function GetPathOfMPCHC() {
+    // path of media player classic home cinema (MPC-HC version 1.7.5)
+    var path;
+    //path = RegRead('HKCU\SOFTWARE\MPC-HC\MPC-HC', 'ExePath');
+    if (path === '') {
+       path = 'mpc-hc.exe';
+    }
+    return path;
+}
+

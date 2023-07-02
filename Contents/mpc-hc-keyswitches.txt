@@ -1,0 +1,53 @@
+Usage: mpc-hc.exe "pathname" [switches]
+
+"pathname"	The main file or directory to be loaded
+        (wildcards allowed, "-" denotes standard input)
+/dub "dubname"	Load an additional audio file
+/dubdelay "file"	Load an additional audio file shifted with XXms
+        (if the file contains "...DELAY XXms...")
+/d3dfs		Start rendering in D3D fullscreen mode
+/sub "subname"	Load an additional subtitle file
+/filter "filtername"	Load DirectShow filters from a dynamic link library (wildcards allowed)
+/dvd		Run in DVD mode, "pathname" means the DVD folder (optional)
+/dvdpos T#C	Start playback at title T, chapter C
+/dvdpos T#P	Start playback at title T, position P (hh:mm:ss)
+/cd		Load all the tracks of an Audio CD or (S)VCD,
+        "pathname" means the drive path (optional)
+/device		Open the default video device
+/open		Open the file, don't automatically start playback
+/play		Start playing the file as soon the player is launched
+/close		Close the player after playback (only works when used with /play)
+/shutdown	Shutdown the operating system after playback
+/standby		Put the operating system in standby mode after playback
+/hibernate	Hibernate operating system after playback
+/logoff		Log off after playback
+/lock		Lock workstation after playback
+/monitoroff	Turn off the monitor after playback
+/playnext		Open next file in the folder after playback
+/fullscreen	Start in fullscreen mode
+/minimized	Start in minimized mode
+/new		Use a new instance of the player
+/add		Add "pathname" to playlist, can be combined with /open and /play
+/randomize	Randomize the playlist
+/regvid		Create file associations for video files
+/regaud		Create file associations for audio files
+/regpl		Create file associations for playlist files
+/regall		Create file associations for all supported file types
+/unregall		Remove all file associations
+/start ms		Start playing at "ms" (= milliseconds)
+/startpos hh:mm:ss	Start playing at position hh:mm:ss
+/fixedsize w,h	Set a fixed window size
+/monitor N	Start player on monitor N, where N starts from 1
+/audiorenderer N	Start using audiorenderer N, where N starts from 1 (see "Output" settings)
+/shaderpreset "Pr"	Start using "Pr" shader preset
+/pns "name"	Specify Pan&Scan preset name to use
+/iconsassoc	Reassociate format icons
+/nofocus		Open MPC-HC in background
+/webport N	Start web interface on specified port
+/debug		Show debug information in OSD
+/nocrashreporter	Disable the crash reporter
+/slave "hWnd"	Use MPC-HC as slave
+/hwgpu "index"	Set the index of the GPU used for hardware decoding.
+        Only available for CUVID and DXVA2 (copy-back)
+/reset		Restore default settings
+/help /h /?	Show help about command line switches

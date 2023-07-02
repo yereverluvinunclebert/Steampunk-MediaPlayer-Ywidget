@@ -1,0 +1,576 @@
+
+
+/*jslint for, multivar, this */
+
+/*property
+    Item, Playlist, backgroundColor, caption, color, currentMusicFolderPref,
+    data, driveSpecifier, folderAlertPref, font, forEach, getDirectoryContents,
+    indexOf, isDirectory, lastIndexOf, length, onMouseDown, onMouseDrag,
+    onMouseEnter, onMouseUp, onMultiClick, popupPanelFont, round, soundpref,
+    src, style, substr, substring, tooltip, vOffset, value, visible
+*/
+
+"use strict";
+
+var folderSelected, okButton, cancelButton, xButton, dprint, folderWindow, folderListFrame;     // globals
+var theFolder, previousFolderSelect, getFileOnly, previousChosenFolder, chosenFolder;
+var folderPath, CDROM, CDROMcount, cdRomNo, cdMenuItem, playAudioCD, upIcon, drivesIcon;
+var openFolderToPlay, winding, folderListText, ironSlider, folderSlider, folderButton, IsSong;
+var validTypes, xtn;
+var readFolderList = null;  // forward declaration
+
+var folderCount = 0;
+var tmfolderList = [];
+var increment = 0;
+var folderListType = "folder";
+var folderSelectedNo = 0;
+
+folderSelected.font = preferences.popupPanelFont.value;
+okButton.tooltip = "Click to play the selected folder";
+cancelButton.tooltip = "Click to close the window";
+xButton.tooltip = "Click to close the window";
+drivesIcon.tooltip = "Click to open Windows default file browser at the root";
+folderSelected.tooltip = "Clicking Play will play this folder";
+
+// Done:
+
+// activate the clicks on a folder icon as well as the folder name
+// opening a sub folder for playing - works
+// opening the folder above using UP - works
+// need to check if current folder is root and disallow that selection
+// add a folderSlider allowing selection of folders beyond the 12 - 
+// changed the computer icon
+// fix the reason alert for not selecting the root
+
+
+// To Do:
+
+// the folderSlider goes below the selection of folders beyond the 12 displayed - WIP
+// savedReplacedTrack bug
+// save the selected track to the current prefs
+// there is a // bug when selecting a folder using the Windows default browser
+// onMouse Scroll movements to select up/and down - WIP
+// key presses to cause movement up/and down - WIP
+
+
+
+//===================================
+//  function to remove play list styling
+//===================================
+function setFolderListStyling() {
+    dprint("%-I-INFO, setFolderListStyling");
+    // get rid of any background styling
+
+    folderListText.forEach(function (ele) {
+        ele.style = "font-family: " + preferences.popupPanelFont.value;
+    });
+}
+//=====================
+//End function
+//=====================
+
+
+
+//=====================
+//function to
+//=====================
+function folderListPopulate(factor, listType) {
+    if (factor < 0) {
+        return;
+    }
+    //if (factor + 11 > folderCount) {return};
+    print("listType "+ listType);
+    folderListText.forEach(function (ele, i) {
+        if ((tmfolderList[i + factor] !== null) && (tmfolderList[i + factor] !== "") && (tmfolderList[i + factor] !== undefined)) {
+            if (listType === "folder") {
+                ele.data = tmfolderList[i + factor];
+        		ele.tooltip = "Double-click to drill down into the folder or click once and press Play to select";
+                folderButton[i].src = "Resources/folder.png";
+                folderButton[i].tooltip = ele.tooltip;
+            } else {
+
+                //if the files is a music file then style the button
+                IsSong = (validTypes.indexOf(xtn(ele.data)) >= 0);
+                if (IsSong) {
+                    folderButton[i].src = "Resources/document-music.png";
+                ele.data = getFileOnly(tmfolderList[i + factor]);
+        		ele.tooltip = "This is a folder selection - Press Play button below and it will play this whole folder";
+        		folderButton[i].tooltip = ele.tooltip;
+
+                } else {
+                    folderButton[i].src = "Resources/document-unknown.png";
+                }
+            }
+            folderButton[i].visible = true;
+        } else {
+			ele.data = "";
+			folderButton[i].visible = false;
+        }
+    });
+}
+//=================================
+// end function
+//=================================
+
+
+//===================================
+//  function to remove play list styling
+//===================================
+function removeFolderListStyling() {
+    dprint("%-I-INFO, removeFolderListStyling");
+    // get rid of any background styling
+
+    folderListText.forEach(function (ele) {
+        ele.style.color = "black";
+        ele.style.backgroundColor = "transparent";
+        //folderButton[i].visible = false;
+    });
+}
+//=====================
+//End function
+//=====================
+
+//===================================
+// function to open a folder and read its contents searching for folders within
+//===================================
+readFolderList = function (folderPath) {
+    var i;
+    var convertedPath;
+    var idxFile = 0;
+    var fs = null;
+    var fileCount;
+
+    dprint(" %-I-INFO, readFolderList");
+
+    folderSelected.data = folderPath;
+
+    folderWindow.visible = true;
+    setFolderListStyling();
+
+    fs = filesystem.getDirectoryContents(folderPath, false);
+    folderCount = fs.length;
+    tmfolderList = []; // redim
+
+    dprint("Filesystem initial search file count " + folderCount);
+    // this takes a folder listing array and filters out non-folders
+    // putting them in a temporary array
+    for (i = 0; i < fs.length; i += 1) {
+        convertedPath = convertPathToPlatform(folderPath + "/" + fs[i]);
+        if (filesystem.isDirectory(convertedPath)) {
+            tmfolderList[idxFile] = convertedPath;
+            idxFile += 1;
+        }
+    }
+    dprint("Filesystem valid folder count - adding " + idxFile + " valid folders to list.");
+    folderCount = idxFile;
+    if (folderCount >= 12) {
+        ironSlider.visible = true;
+        folderSlider.visible = true;
+    } else {
+        ironSlider.visible = false;
+        folderSlider.visible = false;
+    }
+    // this populates the folder list array with the folders only and styles the buttons
+    if (idxFile > 0) { //so we have found folders
+        folderListType = "folder";
+        folderListPopulate(0, folderListType);
+    } else { //no folders found so display files instead
+        // this takes a file listing array and double checks they are not folders
+        // putting them in a temporary array
+        for (i = 0; i < fs.length; i += 1) {
+            convertedPath = convertPathToPlatform(folderPath + "/" + fs[i]);
+            if (!filesystem.isDirectory(convertedPath)) { // not a folder but a file
+                tmfolderList[idxFile] = convertedPath;
+                idxFile += 1;
+            }
+        }
+        fileCount = idxFile;
+        if (fileCount >= 12) {
+            ironSlider.visible = true;
+            folderSlider.visible = true;
+        } else {
+            ironSlider.visible = false;
+            folderSlider.visible = false;
+        }
+        removeFolderListStyling();
+        // this populates the folder list array with the music files only and styles the buttons
+        folderListType = "files";
+        folderListPopulate(0, folderListType);
+
+        if (preferences.folderAlertPref.value === 0) {
+            var answer = alert("In this folder \"" + folderPath + "\" there are no further sub-folders to drill down into. Select this folder for playing?", "Select for playing", "No Thanks", "No and stop asking me this question");
+            if (answer === 1) {
+                okButton.onMouseDown(); // play it
+            }
+            if (answer === 3) {
+                preferences.folderAlertPref.value = 1;
+            }
+        }
+    }
+};
+//=====================
+//End function
+//=====================
+
+
+
+//=====================
+// functions to set the background on the single-clicked tracks
+//=====================
+folderListText.forEach(function (ele,i) {
+    ele.onMouseDown = function () {
+    //clear the styling
+        removeFolderListStyling();
+        if (filesystem.isDirectory(ele.data)) {
+            folderSelectedNo = i;
+            folderSelected.data = ele.data;
+            ele.style.color = "white";
+            ele.style.backgroundColor = "#0F0BB3";
+        }
+    };
+});
+//=====================
+//  END function
+//=====================
+
+//=====================
+// functions to set the background on the multi-clicked tracks
+//=====================
+folderListText.forEach(function (ele) {
+    ele.onMultiClick = function () {
+        if (filesystem.isDirectory(ele.data)) {
+            //print("drilling down");
+            folderSelected.data = ele.data;
+            ele.style.color = "white";
+            ele.style.backgroundColor = "#0F0BB3";
+
+            readFolderList(folderSelected.data);
+        }
+    };
+});
+//=====================
+//  END function
+//=====================
+
+//=====================
+// functions to select and set the background on the single-clicked tracks using the folder icons
+//=====================
+folderButton.forEach(function (ele, i) {
+    ele.onMouseDown = function () {
+    //clear the styling
+        removeFolderListStyling();
+        print(folderListText[i].data);
+        if (filesystem.isDirectory(folderListText[i].data)) {
+            folderSelectedNo = i;
+            folderSelected.data = folderListText[i].data;
+            folderListText[i].style.color = "white";
+            folderListText[i].style.backgroundColor = "#0F0BB3";
+        }
+    };
+});
+//=====================
+//  END function
+//=====================
+
+//=====================
+// functions to set the background on the multi-clicked tracks but using the folder icons
+//=====================
+folderButton.forEach(function (ele, i) {
+    ele.onMultiClick = function () {
+        if (filesystem.isDirectory(folderListText[i].data)) {
+            //print("drilling down");
+            folderSelected.data = folderListText[i].data;
+            folderListText[i].style.color = "white";
+            folderListText[i].style.backgroundColor = "#0F0BB3";
+
+            readFolderList(folderSelected.data);
+        }
+    };
+});
+//=====================
+//  END function
+//=====================
+
+
+
+//=====================
+//function to test the folder is not root and then open it to play the contents.
+//=====================
+okButton.onMouseDown = function () {
+    var o;
+
+    folderWindow.visible = false;
+    previousChosenFolder = chosenFolder;
+    chosenFolder = folderSelected.data;
+	if ((chosenFolder.length === 3) && (folderPath.substr(1, 1) === ":")) { // does it need to do all this consider it has handled later - test
+        o = chosenFolder.substr(0, 2);
+        if (CDROMcount !== 0) {
+            if (o === CDROM.Item(cdRomNo).driveSpecifier) {
+                cdMenuItem.caption = "Audio CD Drive (" + CDROM.Item(cdRomNo).driveSpecifier + ")"; //this line does nothing, it should...
+                playAudioCD(0, CDROM.Item(cdRomNo).Playlist);
+            } else {
+				stateRoot();
+            }
+        } else {
+			stateRoot();
+        }
+        return;
+    }
+    openFolderToPlay();
+};
+//=====================
+//End function
+//=====================
+
+//=====================
+//function to cancel the window
+//=====================
+cancelButton.onMouseDown = function () {
+    folderWindow.visible = false;
+};
+//=====================
+//End function
+//=====================
+
+//=====================
+//function to cancel the window
+//=====================
+xButton.onMouseDown = function () {
+    folderWindow.visible = false;
+};
+//=====================
+//End function
+//=====================
+
+
+//=====================
+//function to
+//=====================
+function folderFind(path) {
+    var idx = path.lastIndexOf("\\");
+
+    if (idx >= 0) {
+        return path.substring(0, idx);
+    }
+    return path;
+}
+//=====================
+//End function
+//=====================
+
+//=====================
+//function to display the path
+//=====================
+upIcon.onMouseEnter = function () {
+    var fpath;
+    fpath = folderSelected.data;
+
+    fpath = convertPathToPlatform(fpath);
+    fpath = folderFind(fpath);
+    upIcon.tooltip = "Up to drive " + fpath;
+};
+//=====================
+//End function
+//=====================
+
+//=====================
+//function to select the parent folder above
+//=====================
+upIcon.onMouseDown = function () {
+    var fpath;
+    //dprint(" >>>>>>>>>>>>>>>>>>> upIcon.onMouseDown" );
+    // need to check if root and disallow selection
+    removeFolderListStyling();
+
+    fpath = folderSelected.data;
+    fpath = convertPathToPlatform(fpath);
+    fpath = folderFind(fpath);
+
+    upIcon.tooltip = fpath;
+    //print(fpath);
+    folderSelected.data = fpath;
+    readFolderList(folderSelected.data);
+};
+//=====================
+//End function
+//=====================
+
+
+//=====================
+//function to
+//=====================
+drivesIcon.onMouseDown = function () {
+    folderWindow.visible = false;
+    chosenFolder = "";
+    openFolderToPlay();
+};
+//=====================
+//End function
+//=====================
+
+//=================================
+// Function to select a folder
+//=================================
+function selectFolderToPlay() {
+    if (preferences.soundpref.value === "enabled") {
+        play(winding, true);
+    }
+
+    if (preferences.currentMusicFolderPref.value === previousChosenFolder) {
+        folderSelected.data = preferences.currentMusicFolderPref.value;
+    }
+    folderWindow.visible = true;
+}
+//=================================
+// end function
+//=================================
+
+
+//=====================
+//function to removeFolderListStyling
+//=====================
+folderSlider.onMouseDown = function () {
+	removeFolderListStyling();
+};
+//=================================
+// end function
+//=================================
+
+
+//=====================
+//function to
+//=====================
+folderSlider.onMouseDrag = function (event) {                                                                     // scaled
+    var y = event.vOffset - 30;
+    var max = 360;
+    var min = 100;
+    var factor = 0;
+
+    if (y >= max) {
+        y = max;
+    }
+    if (y <= min) {
+        y = min;
+    }
+    folderSlider.vOffset = Math.round(y);
+    factor = parseInt((folderSlider.vOffset - 220) / 10);
+    if (y === max) {
+        increment = increment + 1;
+    }
+    if (y === min) {
+        increment = increment - 1;
+    }
+    if ((y !== max) && (y !== min)) {
+        increment = 0;
+    }
+    folderListPopulate(factor + increment, folderListType);
+};
+//=================================
+// end function
+//=================================
+
+
+//=====================
+//function to
+//=====================
+folderSlider.onMouseUp = function () {
+    folderSlider.vOffset = 220;
+    increment = 0;
+};
+//=================================
+// end function
+//=================================
+
+//folderSlider.onMouseExit = TOOLTIP.remove;
+
+
+
+
+
+//===================================
+// function to capture a mousewheel event
+//===================================
+browseFolder.onMouseWheel = function (event) {
+	if (event.scrollDelta > 0) {
+
+	} else if (event.scrollDelta < 0) {
+
+	}
+    folderListPopulate(event.scrollDelta, folderListType);
+	    
+};
+//=====================
+//End function
+//=====================
+
+
+/*
+//=====================================================================
+// this was an earlier attempt at getting the folder object to function
+// no longer works under Windows 7 and above for a normal user.
+// still works OK in jscript for Windows but not javascript for webkit as the o/s denies permission
+// we could call jscript and get it to do the dirty work but that is a bit of a kludge.
+
+function readFolderList2(folderPath) {
+    //var objShell = new ActiveXObject("shell.application");
+    var objShell = COM.createObject("Shell.Application");
+    var ssfWINDOWS = 36;
+    var objFolder;
+
+    COM.connectObject(objShell, "SHE_");
+
+    objFolder = objShell.BrowseForFolder(0, "Example", 0, ssfWINDOWS);
+    if (objFolder !== null) {
+        // Add code here.
+    }
+}
+*/
+
+
+
+//===============================================================
+// this function defines the keyboard events captured
+//===============================================================
+folderWindow.onKeyDown = function(event) {
+
+        if (system.event.keyCode === 40) {
+                dprint("%KON-I-INFO, pressing down key " + system.event.keyCode);
+                folderSelectedNo = folderSelectedNo + 1;
+                if (folderSelectedNo > 11) {
+                	folderSelectedNo = 11;
+                }
+				//clear the styling
+				removeFolderListStyling();
+				folderSelected.data = folderListText[folderSelectedNo].data;
+				folderListText[folderSelectedNo].style.color = "white";
+				folderListText[folderSelectedNo].style.backgroundColor = "#0F0BB3";
+        }
+        if (system.event.keyCode === 38) {
+                dprint("%KON-I-INFO, pressing up key " + system.event.keyCode);
+                folderSelectedNo = folderSelectedNo - 1;
+                if (folderSelectedNo <= 0) {
+                	folderSelectedNo = 0;
+                }
+				//clear the styling
+				removeFolderListStyling();
+				folderSelected.data = folderListText[folderSelectedNo].data;
+				folderListText[folderSelectedNo].style.color = "white";
+				folderListText[folderSelectedNo].style.backgroundColor = "#0F0BB3";
+        }
+
+        if (system.event.keyCode === 13) {
+                dprint("%KON-I-INFO, pressing enter key " + system.event.keyCode);
+
+        }
+
+   };
+//=====================
+//End function
+//=====================
+
+
+
+
+//=====================
+// end folder.js
+//=====================

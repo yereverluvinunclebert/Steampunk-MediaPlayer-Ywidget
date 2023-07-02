@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget minimumVersion="4.5">
+    <!--
+        Written by: Dean Beedell 1.0.14
+    -->
+
+    <about-box>
+        <image>Resources/mediaAboutYwidget.png</image>
+        <about-version font="Times New Roman" color="#000000" vOffset="59" hOffset="120" size="12">
+            <shadow color="#ffffff" vOffset="1" hOffset="1"/>
+        </about-version>
+        <about-text font="Times New Roman" color="#000000" vOffset="59" hOffset="70" url="http://www.lightquick.co.uk" data="Version " size="13">
+            <shadow color="#ffffff" vOffset="1" hOffset="1"/>
+        </about-text>
+        <about-text font="Times New Roman" color="#000000" vOffset="220" hOffset="25" url="http://lightquick.co.uk/instructions-for-the-steampunk-media-player-yahoo-widget.html" data="           " size="90">
+            <shadow color="#ffffff" vOffset="1" hOffset="1"/>
+        </about-text>
+    </about-box>
+    
+
+
+
+    <window visible="false" name="mainWindow" width="760" title="Media Player" height="700" shadow="false">
+            <frame name="myFrame" visible="false" >
+            <frame visible="false" name="playlistFrame" hOffset="-10">
+                <image visible="true" vOffset="100" name="playListPageBackG" src="Resources/playListPageBackG.png" hOffset="145"/>
+                <image visible="true" vOffset="61" name="connectingChainLeft" src="Resources/connectingChain.png" hOffset="325"/>
+                <image visible="true" vOffset="61" name="connectingChainRight" src="Resources/connectingChain.png" hOffset="325"/>
+                <image visible="true" vOffset="61" name="playListSlider" src="Resources/playListSlider.png" hOffset="325"/>
+                <image visible="true" vOffset="10" name="keyf" src="Resources/keyf.png" hOffset="240"/>
+                <image visible="true" vOffset="10" name="keyd" src="Resources/keyd.png" hOffset="240"/>
+                <image visible="true" vOffset="10" name="keyu" src="Resources/keyu.png" hOffset="240"/>
+                <image visible="true" vOffset="10" name="keyViewScreen" src="Resources/indicatorRod.png" hOffset="240"/>
+                <image visible="true" vOffset="10" name="keyFullScreen" src="Resources/indicatorRod.png" hOffset="240"/>
+                <image visible="true" vOffset="100" name="playlistArea" src="Resources/playlistArea.png" hOffset="50"/>
+                <image visible="true" vOffset="10" name="bracket" src="Resources/bracket.png" hOffset="240"/>
+                <text vOffset="56" name="playListTitle" width="206" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="39" data="Drag and drop onto this list." height="24"/>
+                <text visible="true" style="text-align:center" height="24" opacity="255" color="#000000" vOffset="138" name="playListPage" width="108" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="145" data=" Page no."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="200" name="playListText0" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="Getting track data for this track..."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="222" name="playListText1" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="1. Track Two."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="244" name="playListText2" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="2.  Track Three."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="266" name="playListText3" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="2.  Track Four."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="288" name="playListText4" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="4.  Track Five."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="310" name="playListText5" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="5.  Track Six."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="332" name="playListText6" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="6.  Track Seven."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="354" name="playListText7" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="7.  Track Eight."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="376" name="playListText8" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="8.  Track Nine."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="398" name="playListText9" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="9.  Track Ten."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="420" name="playListText10" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="10.    Track Eleven."/>
+                <text visible="true" opacity="255" color="#000000" vOffset="442" name="playListText11" width="190" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="100" data="11. Track Twelve."/>
+                <frame visible="true" name="keyFrame">
+                    <image visible="true" vOffset="90" name="buttonConfig" src="Resources/button-config.png" hOffset="50"/>
+                    <image visible="true" vOffset="450" name="prevChunk" src="Resources/previousButton.png" hOffset="140">
+                    </image>
+                    <image visible="true" vOffset="450" name="firstChunk" src="Resources/firstButton.png" hOffset="112">
+
+                    </image>
+                    <image visible="true" vOffset="450" name="nextChunk" src="Resources/nextButton.png" hOffset="216">
+
+                    </image>
+                    <image visible="true" vOffset="450" name="lastChunk" src="Resources/lastButton.png" hOffset="243">
+
+                    </image>
+                    <image visible="true" vOffset="450" name="sButton" src="Resources/sButton.png" hOffset="270">
+
+                    </image>
+                    <image visible="true" vOffset="450" name="oButton" src="Resources/oButton.png" hOffset="85">
+                    </image>
+                    <image visible="true" vOffset="470" name="ovalButton" src="Resources/ovalButton.png" hOffset="130">
+                    </image>
+                </frame>
+                <image visible="true" vOffset="120" name="tap" src="Resources/tap.png" hOffset="305"/>
+                <image visible="true" vOffset="120" name="playListTap" src="Resources/tap.png" hOffset="75"/>
+            <image visible="false" vOffset="200" name="mediapopupplaque" src="Resources/mediapopupplaque.png" hOffset="120">
+
+            </image>
+
+                <image visible="true" zorder="24" vOffset="240" name="busyBlur" src="Resources/busyBlur.png" hOffset="170"/>
+                <image visible="true" zorder="25" vOffset="240" name="busy" src="Resources/busy-F1-32x32x24.png" hOffset="170"/>
+            </frame>
+            <frame visible="true" vOffset="-1" name="deleteLayer" hOffset="-10">
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton0" src="Resources/tap.png" hOffset="3"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton1" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton2" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton3" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton4" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton5" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton6" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton7" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton8" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton9" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton10" src="Resources/tap.png" hOffset="51"/>
+                <image visible="true" opacity="1" vOffset="51" name="deleteButton11" src="Resources/tap.png" hOffset="51"/>
+            </frame>
+            <image visible="true" vOffset="81" name="cableWheelSet" src="Resources/cableWheelSet.png" hOffset="288"/>
+            <image opacity="255" vOffset="100 " name="cable" src="Resources/cable.png" hOffset="224"/>
+            <image visible="true" vOffset="18" name="lockArea" src="Resources/lockAreaFree.png" hOffset="64">
+            </image>
+            <image visible="false" vOffset="4" name="lockAreaLocked" src="Resources/lockAreaLocked.png" hOffset="61"/>
+            <image visible="true" vOffset="61" name="chain" src="Resources/chain.png" hOffset="325"/>
+            <image vOffset="18" name="endPipe" src="Resources/pipes-end.png" width="39" hOffset="8" height="78">
+            </image>
+            <image visible="true" vOffset="19" name="pipes" src="Resources/pipes.png" hOffset="44"/>
+            <image visible="true" zorder="6" vOffset="30" name="positionSlider" src="Resources/positionSlider.png" hOffset="60">
+
+            </image>
+            <image visible="true" vOffset="72" name="pipesRight" src="Resources/pipesRight.png" hOffset="365">
+
+            </image>
+            <image visible="true" vOffset="60" name="bell" src="Resources/bell.png" hOffset="264"/>
+            <image voffset="60" name="playButton" hoffset="265" src="Resources/play.png" width="32" height="32">
+
+            </image>
+            <image visible="false" voffset="60" name="pauseButton" hoffset="266" src="Resources/pause.png" width="32" height="32">
+
+            </image>
+            <image visible="true" vOffset="65" name="indicatorRed" src="Resources/indicatorRed.png" hOffset="301"/>
+            <image visible="true" vOffset="0" name="speaker0" src="Resources/speaker.png" hOffset="247">
+            </image>
+            <image visible="true" vOffset="66" name="bar" src="Resources/bar.png" hOffset="31"/>
+            <image visible="true" vOffset="49" name="sliderSet" src="Resources/sliderSet.png" hOffset="160">
+            </image>
+            <image voffset="64" name="nextButton" hoffset="340" src="Resources/nextButton.png">
+
+            </image>
+            <image voffset="64" name="prevButton" hoffset="317" src="Resources/previousButton.png">
+
+            </image>
+            <text visible="true" opacity="255" color="#ffffff" vOffset="34" name="trackNoText" width="47" style="font-family: &apos;Times New Roman&apos;; font-weight: bold; font-size: 15px" hOffset="20" data="track 0"/>
+            <text visible="true" opacity="180"  color="#ffffff" style="-kon-shadow:black " vOffset="32" name="trackNameShadow" width="208" style="font-family: &apos;Times New Roman&apos;; font-weight: bold; font-size: 14px" hOffset="85" data="Steampunk Media player - right click to select a track to play"/>
+            <text visible="true" opacity="255" color="#ffffff" vOffset="32" name="trackNameText" width="208" height="20" style="font-family: &apos;Times New Roman&apos;; font-weight: bold; font-size: 14px" hOffset="85" data="Steampunk Media player - right click to select a track to play"/>
+            <image visible="true" opacity = "1" vOffset="0" name="speaker" src="Resources/speaker.png" hOffset="247">
+            </image>
+
+            <image visible="false" vOffset="4" name="autoPlayLugEnabled" src="Resources/autoPlayLugEnabled.png" hOffset="61"/>
+
+            <image visible="true" vOffset="19" name="autoPlayLug" src="Resources/autoPlayLug.png" hOffset="224"/>
+            <text visible="true" opacity="200" color="#000000" vOffset="54" name="percentText" style="font-family: &apos;Times New Roman&apos;; font-weight: bold; font-size: 14px" hOffset="27" data="20%"/>
+            <text visible="true" opacity="255" color="#ffffff" vOffset="53" name="percentTextShadow" style="font-family: &apos;Times New Roman&apos;; font-weight: bold; font-size: 14px" hOffset="26" data="20%"/>
+        </frame>
+    </window>
+    <window visible="false" name="helpLayer1" width="750" height="573" shadow="false">
+            <image visible="true" vOffset="5" name="mediaPlayerHelp" src="Resources/media-player-help.png" hOffset="0"/>
+            <text name="textLinktoClose1" width="250" style="font-family: &apos;Arial&apos;; font-size: 9px" hOffset="570" vOffset="20"  opacity="255" data="CLICK HERE TO CLOSE - X" tooltip="Click here for help page no.2" height="24"/>
+            <text name="textLinktoHelp1" width="250" style="font-family: &apos;Times New Roman&apos;; font-size: 15px" hOffset="360" vOffset="275" data="                               " tooltip="Click here for help page no.2" height="24"/>
+    </window>
+    <window visible="false" name="helpLayer2" width="750" height="573" shadow="false">
+            <image visible="true" vOffset="5" name="mediaPlaylistHelp" src="Resources/mediaPlaylistHelp.png" hOffset="0"/>
+            <text name="textLinktoClose2" width="250" style="font-family: &apos;Arial&apos;; font-size: 9px" hOffset="420" vOffset="57" opacity="1" data="CLICK HERE TO CLOSE - X" tooltip="Click here to close" height="24"/>
+            <text name="textLinktoHelp2" width="250" style="font-family: &apos;Times New Roman&apos;; font-size: 15px"  hOffset="352" vOffset="558" data="                               " tooltip="Click here for help page no.1" height="24"/>
+    </window>
+
+    <prefGroup name="general" order="1" icon="Resources/config-icon.png" title="Configuration"/>
+    <prefGroup name="volume" order="2" icon="Resources/general-icon.png" title="Volume"/>
+    <!--  Dean Beedell DB03  -->
+    <prefGroup name="videos" order="3" icon="Resources/videos-icon.png" title="Videos"/>
+    <prefGroup name="fontGrp" order="5" icon="Resources/font-icon.png" title="Fonts"/>
+    <prefGroup name="tooltips" order="6" icon="Resources/commands-icon.png" title="Tooltips"/>
+    <prefGroup name="config" order="7" icon="Resources/config-icon.png" title="Position & Control"/>
+    <prefGroup name="folders" order="4" icon="Resources/folders-icon.png" title="Music Folders"/>
+    <prefGroup name="development" order="8" icon="Resources/development-icon.png" title="Development"/>
+
+    <preference hidden="false" description="Enter the name of any of your installed fonts - will be used in the information pop-up box that appears when you pull the chain. By default will use Courier New. A very nice font to use here is the Times New Roman font at 17pt size or the Centurion Light Font." name="popupPanelFont" group="fontGrp" title="Pop-up Font:" defaultValue="Courier New" type="font"/>
+    <preference description="Choose the font size of the panel text above." name="popupPanelFontSizePref" group="fontGrp" title="Pop-up panel text size:" defaultValue="17" type="popup">
+        <option>9</option>
+        <option>10</option>
+        <option>11</option>
+        <option>12</option>
+        <option>13</option>
+        <option>14</option>
+        <option>15</option>
+        <option>16</option>
+        <option>17</option>
+        <option>18</option>
+        <option>19</option>
+        <option>20</option>
+        <option>21</option>
+        <option>22</option>
+        <option>23</option>
+        <option>24</option>
+        <option>25</option>
+        <option>26</option>
+        <option>27</option>
+        <option>28</option>
+    </preference>
+    <preference description="This widget makes additional sounds by default - you can enable or disable these sounds as you require." name="soundpref" group="general" title="Sound Control:" defaultValue="enabled" type="popup">
+        <option>enabled</option>
+        <optionValue>enabled</optionValue>
+        <option>disabled</option>
+        <optionValue>disable</optionValue>
+    </preference>
+    <preference hidden="false" description="This changes the direction of the mousewheel when used to control the volume slider. By default forward movement of the scroll wheel increases volume." name="mouseWheelVolumePref" group="volume" title="Volume Control Mouse Wheel Direction" defaultvalue="right" type="popup">
+        <option>forward to increase volume</option>
+        <optionValue>right</optionValue>
+        <option>backward to increase volume</option>
+        <optionValue>left</optionValue>
+    </preference>
+    <preference hidden="true" description="This is the last used volume level in percent." name="volumePref" group="volume" title="Volume level" defaultValue="50" type="text"/>
+    <preference hidden="true" description="Errors will show if the codec is not supported." name="errorMessagesPref" group="general" title="Show Error Messages" defaultValue="enabled" type="text"/>
+    <preference ticks="50" maxlength="130" description="Changes the total size of the widget. Vary the percentage and the whole widget will alter in size." name="maxWidthPref" group="config" title="Widget Size" defaultValue="60" minlength="5" type="slider">
+        <ticklabel>5%</ticklabel>
+        <ticklabel>100%</ticklabel>
+        <ticklabel>150%</ticklabel>
+    </preference>
+    <preference hidden="true" description="" name="widgetLockPref" title="Widget Locked:" defaultValue="0" type="popup">
+        <option>1</option>
+        <optionValue>1</optionValue>
+        <option>0</option>
+        <optionValue>0</optionValue>
+    </preference>
+    <preference hidden="true" description="This is the playlist file format XML or XSPF" name="playlistFormatPref" title="PlayList format" defaultValue="0" type="popup">
+        <option>xml</option>
+        <optionValue>xml</optionValue>
+        <option>xspf</option>
+        <optionValue>xspf</optionValue>
+    </preference>
+
+    <preference hidden="true" description="You can change the name of the widget at any time to correspond to the name of the function you have assigned to it." name="widgetTooltip" group="tooltips" title="Widget Tooltip:" type="text"/>
+    <preference hidden="false" description="Enable or Disable tooltips here " name="tooltipPref" group="tooltips" title="Tooltips:" defaultValue="enabled" type="popup">
+        <option>enabled</option>
+        <optionValue>enabled</optionValue>
+        <option>disabled</option>
+        <optionValue>disabled</optionValue>
+    </preference>
+    <preference hidden="false" description="" name="hoffsetpref" group="config" title="Widget Hoffset/Left X pos default." type="text"/>
+    <preference hidden="false" description="" name="voffsetpref" group="config" title="Widget Yoffset/Top Y pos default." type="text"/>
+    <preference hidden="false" description="Configuration enabling the fade effect on the playlist keys." name="playListKeysPref" group="config" title="Playlist keys:" defaultValue="fade" type="popup">
+        <option>fade</option>
+        <optionValue>fade</optionValue>
+        <option>solid</option>
+        <optionValue>solid</optionValue>
+    </preference>
+    <preference hidden="true" description="Check this box if you don&apos;t want to see the Licence Conditions again." name="licenceHide" title="Don&apos;t Show Licence Again" defaultValue="0" type="checkbox"/>
+    <preference hidden="false" description="This toggles recursive searching on/off. When selecting a folder do not select a massive hard drive/folder or it will cause the widget to loop recursively through the hard drive looking for tracks...it will run out of memory. Use the folder selections below with care and avoid folders with more than 10,000 files." name="recurseFoldersPref" group="folders" title="Recursive Search" defaultvalue="disabled" type="popup">
+        <option>enabled</option>
+        <optionValue>enabled</optionValue>
+        <option>disabled</option>
+        <optionValue>disabled</optionValue>
+    </preference>
+
+    <!--
+    <preference description="This widget uses either WMPlayer or Winamp. WMPlayer is the default as it is the built-in media player for Windows. If you select Winamp, for it to function it MUST be installed separately and the plugins MUST be registered - regsvr32.exe winamp_plugger.dll - to do this right click on the player and select extras." name="playerPref" group="player" title="Player Type:" defaultValue="wmplayer" type="popup">
+        <option>wmplayer</option>
+        <optionValue>wmplayer</optionValue>
+        <option>winamp</option>
+        <optionValue>winamp</optionValue>
+    </preference>
+    -->
+
+    
+    
+    <preference hidden="true" kind="folders" description="This is the current folder that the user opened and played. Select the dropdown to browse a new folder." name="currentMusicFolderPref" group="folders" title="Music folder one" type="text">
+        <defaultValue/>
+    </preference>
+    <preference hidden="false" kind="folders" description="This is the last folder that the user opened and played. Select the dropdown to browse a new folder. Below are earlier folders that the user opened and played." name="musicFolderPref" group="folders" title="Music folder" type="selector">
+        <defaultValue/>
+    </preference>
+    <preference hidden="false" kind="folders" description="" name="musicFolderPref2" group="folders" title="Music folder two" type="selector">
+        <defaultValue/>
+    </preference>
+    <preference hidden="false" kind="folders" description="" name="musicFolderPref3" group="folders" title="Music folder three" type="selector">
+        <defaultValue/>
+    </preference>
+    <preference hidden="false" kind="folders" description="" name="musicFolderPref4" group="folders" title="Music folder four" type="selector">
+        <defaultValue/>
+    </preference>
+    <preference hidden="false" kind="folders" description="" name="musicFolderPref5" group="folders" title="Music folder five" type="selector">
+        <defaultValue/>
+    </preference>
+    <preference hidden="false" description="This changes the direction of the mousewheel when used to control the resizing effect (CTRL+Mousewheel)." name="MouseWheelPref" group="config" title="Resizing Mouse Wheel Direction" defaultValue="up" type="popup">
+        <option>up</option>
+        <option>down</option>
+    </preference>
+    <preference hidden="false" description="This changes the direction of the mousewheel when used to scroll the playlist." name="mouseWheelScrollingPref" group="config" title="Playlist Scrolling Mouse Wheel Direction" defaultValue="up" type="popup">
+        <option>up</option>
+        <option>down</option>
+    </preference>
+    <preference hidden="true" description="This saves the current play list location." name="playlistLocationPref" group="config" title="Save playlist location" defaultValue="enabled" type="popup">
+        <option>enabled</option>
+        <option>disabled</option>
+    </preference>
+    <preference hidden="false" description="You can set the shuffle toggle here to randomise the playlist." name="shuffleStatePref" group="general" title="Random Shuffle" defaultValue="enabled" type="popup">
+        <option>enabled</option>
+        <option>disabled</option>
+    </preference>
+    <preference hidden="false" description="This sets the autoplay state on startup. Be aware that if you have set the widget engine to automatically run on startup the widget will start to play music immediately your system is restarted. If enabled the widget will start playing your most recently selected folder. If disabled it will show the play list but play nothing." name="startupPlayStatePref" group="general" title="Autoplay on Startup" defaultValue="disabled" type="popup">
+        <option>enabled</option>
+        <option>disabled</option>
+    </preference>
+    <preference hidden="false" description="This turns on the automatic play function. The widget will play the next track automatically when your currently selected track has finished." name="autoPlayStatePref" group="general" title="Automatic Track Selection" defaultValue="disabled" type="popup">
+        <option>enabled</option>
+        <option>disabled</option>
+    </preference>
+    <preference ticks="50" maxlength="100" description="When on autoplay you can set an automatic startup volume that is correct for your ears." name="autoPlayVolumePref" group="volume" title="Autoplay Volume" defaultValue="60" minlength="0" type="slider">
+        <ticklabel>0%</ticklabel>
+        <ticklabel>60%</ticklabel>
+        <ticklabel>100%</ticklabel>
+    </preference>
+    <preference hidden="false" description="In the scrolling title bar, show just the music title or the full file name including folder name." name="titlePref" group="folders" title="Title Display" defaultValue="filename only" type="popup">
+        <option>filename only</option>
+        <option>filename with folder</option>
+    </preference>
+    <preference hidden="true" description="Show the play list. The play list will eventually allow selection of a track, drag and drop of tracks. It currently shows the first tracks in the play list but that&apos;s about it." name="playListPref" group="config" title="Play List" defaultValue="disabled" type="popup">
+        <option>enabled</option>
+        <option>disabled</option>
+    </preference>
+
+    <!--  Dean Beedell DB03 starts, grouping the video items -->
+    <preference kind="files" description="Please locate the Windows Media Player application. When run under Windows the widget uses WMP to play the different types of music files." name="wmpApplicationPref" group="videos" style="open" title="WMP Application" type="selector"
+    	defaultValue="C:/Program Files/Windows Media Player/wmplayer.exe"/>
+    <preference hidden="false" description="Play video files in the Windows Media Player Application." name="wmpAllowPref" group="videos" title="Play Video in WMP Application" defaultValue="0" type="checkbox"/>
+    <preference hidden="false" description="Allow QT Player to control this widget." name="qtAllowPref" group="videos" title="Allow QTP Control" defaultValue="0" type="checkbox"/>
+    <preference hidden="false" description="Miniaturize QT Player when possible." name="qtMiniaturizePref" group="videos" title="Miniaturize QTP" defaultValue="0" type="checkbox"/>
+    <preference hidden="false" description="Play video tracks fullscreen." name="fullscreenPref" group="videos" title="Fullscreen Video" defaultValue="0" type="checkbox"/>
+    <!--  Dean Beedell DB03 starts  -->
+
+
+    <preference hidden="false" description="Turning on the debugging will provide extra information in the debug window. To obtain the debug window press SHIFT+CTRL simultaneously whilst right clicking on the Yahoo widget systray icon, then select debug from the drop down menu. You will need to restart the widget properly rather than doing a simple restart for debugging information to appear." name="debugflgPref" group="development" title="Debug:" defaultValue="0" type="popup">
+        <option>Debug OFF</option>
+        <optionValue>0</optionValue>
+        <option>Debug ON</option>
+        <optionValue>1</optionValue>
+    </preference>
+
+    <preference hidden="true" description="Development ONLY: Enter your editor path here along with any command line switches required to open this widget in the editor. This function only operates if the widget has been unpacked and DEBUG is ON. " name="imageEditPref" group="development" title="Default Editor:" defaultValue="" type="text"/>
+
+    <preference hidden="true" description="This includes all folders that will pose a problem to this widget. The Windows folder is always one of these and is catered for automatically. Add any additional excluded folders. " name="excludedFoldersList" group="development" title="Excluded Folders:" defaultValue="" type="text"/>
+
+    <preference hidden="true" description="Show full folder names in the file/folder listings." name="showFolderPref" group="config" title="Show Folders:" defaultValue="long" type="popup">
+        <option>short</option>
+        <optionValue>short</optionValue>
+        <option>long</option>
+        <optionValue>long</optionValue>
+    </preference>
+
+
+    <preference hidden="false" description="Scrolling animation uses cpu cycles, on a weak processor disable it to save CPU." name="scrollingPref" group="fontGrp" title="Scrolling Text:" defaultValue="enabled" type="popup">
+        <option>disabled</option>
+        <optionValue>disabled</optionValue>
+        <option>enabled</option>
+        <optionValue>enabled</optionValue>
+    </preference>
+
+    <script src="ES5.js"/>
+    <script src="vitality.js"/>
+    <script src="functions.js"/>
+    <script src="form.js"/>
+    <script src="mediaPlayer.js"/>
+</widget>

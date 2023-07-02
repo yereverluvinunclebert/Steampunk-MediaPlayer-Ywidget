@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <name>Steampunk Media Player</name>
+    <version>1.0.14</version>
+    <author name = "Dean Beedell" />
+    <platform minVersion = "4.5" />
+    <description>This is a Steampunk Media Player. It works invisibly with Windows Media Player and on Mac OS/X giving a steampunk skin to your music interface. It has a playlist, play, pause, next and previous buttons. You control the volume level by moving the slider. You can drag and drop music files onto the widget to play instantly.</description>
+    <image usage="security" src="Resources/security.png"/>
+     <security>
+             <filesystem>full</filesystem>
+             <http>all</http>
+             <applescript>true</applescript>
+             <command>true</command>
+             <hotkey>true</hotkey>
+             <!---com>wmplayer.ocx</com-->
+             <com name="Windows Media Player">{6BF52A52-394A-11d3-B153-00C04F79FAA6}</com>
+             <com>gen_scripting.WinAmp</com>
+             <com>WinampPlugger.Winamp</com>
+             <com name="VLC Player">{9BE31822-FDAD-461B-AD51-BE1D1C159921}</com>
+         </security> 
+</metadata>
