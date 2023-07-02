@@ -4,7 +4,8 @@
  Widget (Konfabulator) Engine. Created for XP, Vista, Win7, 8, 10+ as well as the 
  Apple Mac.
  
- 
+ ![mediaplayer0001](https://github.com/yereverluvinunclebert/Steampunk-MediaPlayer-Ywidget/assets/2788342/f058d2c2-8f16-4fec-b778-b6faa8cb3eb4)
+
  This widget is an attractive steampunk Yahoo widget for your desktop. The 
  steampunk media player widget allows you to play audio files on your Windows PC
   via a simple slider and pause buttons. The thing that is different about this 
