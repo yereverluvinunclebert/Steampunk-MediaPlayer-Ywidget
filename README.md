@@ -45,9 +45,6 @@
  select a whole folder for playing click on the speaker.
  The widget itself has a built-in help screen (above) accessible when clicking 
  on the help pin lug.
-
-
- ![Image](https://i.imgur.com/8dX3Tni.gif)
  
  Right clicking will bring up a menu of options. One option is the player 
  settings where you can set the default player for the widget to use.You can 
