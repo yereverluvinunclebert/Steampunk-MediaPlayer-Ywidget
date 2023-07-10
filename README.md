@@ -20,7 +20,9 @@
 
  The widget can be resized - Hover the cursor over the widget. Press the CTRL key 
  and use your mousewheel up or down. The widget will resize dynamically.
- 
+
+ ![mehKu05](https://github.com/yereverluvinunclebert/Steampunk-MediaPlayer-Ywidget/assets/2788342/cca2b7b8-6d30-4985-ae45-eba0adf9705e)
+
  The widget functionality is self-explanatory, tinker with it and you will soon 
  get to grips with it, you cannot do any harm. Think of it as a bit of steampunk 
  eye-candy with a useful function. The yahoo widget has a useful playlist. It 
